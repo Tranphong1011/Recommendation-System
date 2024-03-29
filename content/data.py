@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
 import io
-from PIL import Image
 
 products_data  = pd.read_csv("./materials/Products_ThoiTrangNam_raw.csv")
 ratings_data  = pd.read_csv("./materials/Products_ThoiTrangNam_rating_raw.csv",sep='\t')
