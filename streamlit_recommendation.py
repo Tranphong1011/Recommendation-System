@@ -2,6 +2,10 @@ import streamlit as st
 from content.intro import intro
 from content.data import data
 from content.model import model
+from content.conclusion import conclusion
+from content.interaction import interaction
+
+
 
 st.title("Recommender Systems")
 st.sidebar.title('Categories')
@@ -39,13 +43,15 @@ if topics[selected_category]:
         data((topics['Data Process and Explore'].index(selected_subcategory)))
     elif selected_subcategory in topics['Model Build Process']:
         model((topics['Model Build Process'].index(selected_subcategory)))
+    elif selected_subcategory in topics['User Interaction']:
+        interaction((topics['User Interaction'].index(selected_subcategory)))
+    else:
+        st.sidebar.write("No subtopics available for this category.")
+if selected_category == "Conclusions":
+    conclusion()
 
 
 
-
-
-else:
-    st.sidebar.write("No subtopics available for this category.")
 
 
 
