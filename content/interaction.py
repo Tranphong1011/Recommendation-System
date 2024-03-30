@@ -96,20 +96,20 @@ def get_recommend(user_id, rating_prefer):
         return ["User found!", get_item_list, inform]
 
 
-# # Content_based Filtering
-# csv_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam.csv')
-# product_name = pd.read_csv(csv_path,index_col=0, converters={'products_gem_re': ast.literal_eval})
-# products_gem_re = product_name.products_gem_re
-# dictionary = corpora.Dictionary(products_gem_re)
-# feature_cnt = len(dictionary.token2id)
-# corpus = [dictionary.doc2bow(text) for text in products_gem_re]
-# tfidf = models.TfidfModel(corpus) # Use TF-IDF Model to process corpus
-# index = similarities.SparseMatrixSimilarity(tfidf[corpus],
-#                                             num_features = feature_cnt)
-# data_result = pd.DataFrame(index[tfidf[corpus]])
-# product_name["products_gem_re"] = product_name["products_gem_re"].apply(lambda x: ' '.join(x))
-# tf = TfidfVectorizer(analyzer='word', stop_words=stop_words)
-# tfidf_matrix = tf.fit_transform(product_name.products_gem_re)
+# Content_based Filtering
+csv_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam.csv')
+product_name = pd.read_csv(csv_path,index_col=0, converters={'products_gem_re': ast.literal_eval})
+products_gem_re = product_name.products_gem_re
+dictionary = corpora.Dictionary(products_gem_re)
+feature_cnt = len(dictionary.token2id)
+corpus = [dictionary.doc2bow(text) for text in products_gem_re]
+tfidf = models.TfidfModel(corpus) # Use TF-IDF Model to process corpus
+index = similarities.SparseMatrixSimilarity(tfidf[corpus],
+                                            num_features = feature_cnt)
+data_result = pd.DataFrame(index[tfidf[corpus]])
+product_name["products_gem_re"] = product_name["products_gem_re"].apply(lambda x: ' '.join(x))
+tf = TfidfVectorizer(analyzer='word', stop_words=stop_words)
+tfidf_matrix = tf.fit_transform(product_name.products_gem_re)
 #
 # def get_top_recommend_from_item(product_id):
 #     product_list = product_name.product_id.values
