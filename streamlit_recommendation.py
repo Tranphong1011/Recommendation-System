@@ -3,7 +3,7 @@ from content.intro import intro
 from content.data import data
 from content.model import model
 from content.conclusion import conclusion
-from content.interaction import interaction
+# from content.interaction import interaction
 
 
 st.title("Recommender Systems")
@@ -24,7 +24,7 @@ topics = {
     'Data Process and Explore': ['Dataset', 'Data Process', 'Data Exploration'],
     'Model Build Process': ['Top Models for Recommendations', 'Collaborative Filtering', 'Content-based Filtering'],
     'Conclusions': [],
-    'User Interaction': ['Recommendation Based on User', 'Recommendations Based on Content'],
+    # 'User Interaction': ['Recommendation Based on User', 'Recommendations Based on Content'],
     'References': [],
 }
 
@@ -42,8 +42,8 @@ if topics[selected_category]:
         data((topics['Data Process and Explore'].index(selected_subcategory)))
     elif selected_subcategory in topics['Model Build Process']:
         model((topics['Model Build Process'].index(selected_subcategory)))
-    elif selected_subcategory in topics['User Interaction']:
-        interaction((topics['User Interaction'].index(selected_subcategory)))
+    # elif selected_subcategory in topics['User Interaction']:
+    #     interaction((topics['User Interaction'].index(selected_subcategory)))
     else:
         st.sidebar.write("No subtopics available for this category.")
 if selected_category == "Conclusions":
