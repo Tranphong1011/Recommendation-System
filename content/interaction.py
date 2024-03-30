@@ -8,7 +8,7 @@ import ast
 import streamlit as st
 import warnings
 warnings.filterwarnings("ignore")
-from wordcloud import WordCloud
+# from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from gensim import corpora, models, similarities
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -57,19 +57,19 @@ def product_name_processing(user_id):
     product_info_text = ' '.join(product_info_total)
     return product_info_text
 
-# Plot wordcloud
-def wordcloud(user_id):
-    product_info  = product_name_processing(user_id)
-    nWords = 100
-    # Generate the word cloud with improved clarity
-    wordcloud = WordCloud(width=800, height=400, background_color='white', max_words=nWords)
-    wordcloud.generate(product_info)
-    # Plot the word cloud
-    fig, ax = plt.subplots(figsize=(20, 10))
-    ax.imshow(wordcloud, interpolation='bilinear')
-    plt.title(f'Word Cloud of product of user {user_id}', fontsize=20)
-    plt.axis('off')
-    st.pyplot(fig)
+# # Plot wordcloud
+# def wordcloud(user_id):
+#     product_info  = product_name_processing(user_id)
+#     nWords = 100
+#     # Generate the word cloud with improved clarity
+#     wordcloud = WordCloud(width=800, height=400, background_color='white', max_words=nWords)
+#     wordcloud.generate(product_info)
+#     # Plot the word cloud
+#     fig, ax = plt.subplots(figsize=(20, 10))
+#     ax.imshow(wordcloud, interpolation='bilinear')
+#     plt.title(f'Word Cloud of product of user {user_id}', fontsize=20)
+#     plt.axis('off')
+#     st.pyplot(fig)
 
 
 # Collaborative Filtering
@@ -162,7 +162,7 @@ def interaction(x):
                     st.markdown(
                         f'<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; height: auto; background-color: #f0f0f0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">{item}</div>',
                         unsafe_allow_html=True)
-                wordcloud(user_id)
+                # wordcloud(user_id)
             else:
                 st.warning(f"{inform}")
                 st.write(f"{user}")

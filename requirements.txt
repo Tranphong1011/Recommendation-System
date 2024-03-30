@@ -7,4 +7,3 @@ scikit-learn
 surprise
 gensim
 underthesea
-wordcloud
