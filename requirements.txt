@@ -4,3 +4,7 @@ pandas
 matplotlib
 seaborn
 scikit-learn
+surprise
+gensim
+underthesea
+wordcloud
