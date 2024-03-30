@@ -6,7 +6,6 @@ from content.conclusion import conclusion
 from content.interaction import interaction
 
 
-
 st.title("Recommender Systems")
 st.sidebar.title('Categories')
 # """

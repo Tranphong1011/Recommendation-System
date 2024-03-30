@@ -3,7 +3,7 @@ import streamlit as st
 import io
 
 products_data  = pd.read_csv("./materials/Products_ThoiTrangNam_raw.csv")
-ratings_data  = pd.read_csv("./materials/Products_ThoiTrangNam_rating_raw.csv",sep='\t')
+ratings_data  = pd.read_csv("./materials/Products_ThoiTrangNam_rating_raw.csv")
 
 
 url_menfashion = "https://shopee.vn/Th%E1%BB%9Di-Trang-Nam-cat.11035567"
@@ -64,9 +64,7 @@ def data(x):
         if selected_page == "Products Data":
             st.dataframe(products_data.head(5))
 
-            buffer = io.StringIO()
-            products_data.info(buf=buffer)
-            st.text(buffer.getvalue())
+
 
             st.markdown(
                 """
@@ -78,9 +76,7 @@ def data(x):
 
             st.dataframe(products_data_selected.head(5))
 
-            buffer = io.StringIO()
-            products_data_selected.info(buf=buffer)
-            st.text(buffer.getvalue())
+
 
 
             st.markdown(""" 
