@@ -8,3 +8,4 @@ surprise==0.1
 gensim==4.3.2
 underthesea==6.8.0
 wordcloud==1.9.3
+pyLDAvis==3.4.1
