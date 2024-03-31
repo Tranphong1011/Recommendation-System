@@ -107,7 +107,7 @@ tfidf = models.TfidfModel(corpus) # Use TF-IDF Model to process corpus
 
 index = similarities.SparseMatrixSimilarity(tfidf[corpus],
                                             num_features = feature_cnt)
-data_result = pd.DataFrame(index[tfidf[corpus]])
+# data_result = pd.DataFrame(index[tfidf[corpus]])
 # product_name["products_gem_re"] = product_name["products_gem_re"].apply(lambda x: ' '.join(x))
 # 
 #
@@ -126,91 +126,117 @@ data_result = pd.DataFrame(index[tfidf[corpus]])
 #         item_range_list = get_item_range.tolist()
 #         return [item_searching, item_range_list, inform]
 #
-# def get_top_recommend_from_text(text):
-#     processed_text = text_processing(text)
-#     kw_vector = dictionary.doc2bow(processed_text)
-#     sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
-#     get_item_range = product_name.iloc[sim_indices_desc[:5]].product_name.values
-#     item_range_list = get_item_range.tolist()
-#     inform = "Successfully"
-#     return [inform,item_range_list]
+
+product_name_LDA = os.path.join(parent_dir, 'processed_data', 'product_name_LDA.csv')
+def get_top_recommend_from_item(product_id):
+    product_list = product_name.product_id.values
+    if ~np.isin(product_id, product_list):
+        inform = "Unsuccessfully!"
+        return ["No items found!", "Can not recommend!", inform]
+    else:
+        inform = "Successfully!"
+        query = product_name_LDA[product_name_LDA['product_id'] == product_id]
+        recommended = []
+        top5_list = []
+
+        item_searching = query.product_name.values[0]
+        topic_num = query.Topic.values
+        doc_num = query.Doc.values
+        output_df = product_name_LDA[product_name_LDA['Topic'] == topic_num[0]].sort_values('Probability', ascending=False).reset_index(drop=True)
+        index = output_df[output_df['Doc'] == doc_num[0]].index[0]
+        top5_list += list(output_df.iloc[index - 3:index].index)
+        top5_list += list(output_df.iloc[index + 1:index + 3].index)
+        output_df['product_name'] = output_df['product_name'].str.title()
+        for each in top5_list:
+            recommended.append(output_df.iloc[each].product_name)
+        return [item_searching, recommended, inform]
+
+
+def get_top_recommend_from_text(text):
+    processed_text = text_processing(text)
+    kw_vector = dictionary.doc2bow(processed_text)
+    sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
+    get_item_range = product_name.iloc[sim_indices_desc[:5]].product_name.values
+    item_range_list = get_item_range.tolist()
+    inform = "Successfully"
+    return [inform,item_range_list]
 
 
 def interaction(x):
     print(f"This function does something but doesn't return anything")
-    # # Collaborative filtering
-    # if x == 0:
-    #     st.markdown(
-    #         f"""
-    #         #### Recommendation with User ID
-    #         """
-    #     )
-    #     user_id = st.number_input("Enter User ID: ",0)
-    #
-    #     options_dic = {"Yes" : 1, "No": 0}
-    #     # Select box
-    #     rating_select = st.selectbox("Do you want recommendation with rating? ", list(options_dic.keys()))
-    #     # Button
-    #     user, similar_products, inform_cf = get_recommend(user_id, options_dic[rating_select])
-    #     if st.button("Submit"):
-    #         if inform_cf == "Successfully!":
-    #             st.success(f"{inform_cf}")
-    #             st.write(f"**{user}**")
-    #             st.write(f"**Here are similar products**: ")
-    #             for item in similar_products:
-    #                 st.markdown(
-    #                     f'<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; height: auto; background-color: #f0f0f0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">{item}</div>',
-    #                     unsafe_allow_html=True)
-    #             wordcloud(user_id)
-    #         else:
-    #             st.warning(f"{inform_cf}")
-    #             st.write(f"{user}")
-    #             st.write(f"{similar_products}")
-    #
-    # # Content_based filtering
-    # else:
-    #     options = ["Recommendation with Product ID", "Recommendation with Product Name text input"]
-    #     selected_option = st.selectbox("Select an option",options )
-    #     if selected_option == options[0]:
-    #
-    #         st.markdown(
-    #             f"""
-    #             #### Recommendation with Product ID
-    #             """
-    #         )
-    #         product_id = st.number_input("Enter Product ID: ",0)
-    #
-    #         item_searching, item_range_list, inform_cbf = get_top_recommend_from_item(product_id)
-    #         # Button
-    #         if st.button("Submit ID"):
-    #             if inform_cbf == "Successfully!":
-    #                 st.success(f"{inform_cbf}")
-    #                 st.write(f"**The product with ID {product_id}** is: {item_searching}")
-    #                 st.write(f"**Here are similar products:** ")
-    #                 for item in item_range_list:
-    #                     st.markdown(
-    #                         f'<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; height: auto; background-color: #f0f0f0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">{item}</div>',
-    #                         unsafe_allow_html=True)
-    #             else:
-    #                 st.warning(f"{inform_cbf}")
-    #                 st.write(f"{item_searching}")
-    #                 st.write(f"{item_range_list}")
-    #     else:
-    #         st.markdown(
-    #             f"""
-    #             #### Recommendation with Product Name text input
-    #             """
-    #         )
-    #         product_search = st.text_input("Enter Product name: ")
-    #         inform_cbf_2, item_range_list = get_top_recommend_from_text(product_search)
-    #         # Button
-    #         if st.button("Submit name"):
-    #
-    #             st.success(f"{inform_cbf_2}")
-    #             st.write(f"**Here are similar products:** ")
-    #             for item in item_range_list:
-    #                 st.markdown(
-    #                     f'<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; height: auto; background-color: #f0f0f0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">{item}</div>',
-    #                     unsafe_allow_html=True)
-    #
-    #
+    # Collaborative filtering
+    if x == 0:
+        st.markdown(
+            f"""
+            #### Recommendation with User ID
+            """
+        )
+        user_id = st.number_input("Enter User ID: ",0)
+
+        options_dic = {"Yes" : 1, "No": 0}
+        # Select box
+        rating_select = st.selectbox("Do you want recommendation with rating? ", list(options_dic.keys()))
+        # Button
+        user, similar_products, inform_cf = get_recommend(user_id, options_dic[rating_select])
+        if st.button("Submit"):
+            if inform_cf == "Successfully!":
+                st.success(f"{inform_cf}")
+                st.write(f"**{user}**")
+                st.write(f"**Here are similar products**: ")
+                for item in similar_products:
+                    st.markdown(
+                        f'<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; height: auto; background-color: #f0f0f0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">{item}</div>',
+                        unsafe_allow_html=True)
+                wordcloud(user_id)
+            else:
+                st.warning(f"{inform_cf}")
+                st.write(f"{user}")
+                st.write(f"{similar_products}")
+
+    # Content_based filtering
+    else:
+        options = ["Recommendation with Product ID", "Recommendation with Product Name text input"]
+        selected_option = st.selectbox("Select an option",options )
+        if selected_option == options[0]:
+
+            st.markdown(
+                f"""
+                #### Recommendation with Product ID
+                """
+            )
+            product_id = st.number_input("Enter Product ID: ",0)
+
+            item_searching, item_range_list, inform_cbf = get_top_recommend_from_item(product_id)
+            # Button
+            if st.button("Submit ID"):
+                if inform_cbf == "Successfully!":
+                    st.success(f"{inform_cbf}")
+                    st.write(f"**The product with ID {product_id}** is: {item_searching}")
+                    st.write(f"**Here are similar products:** ")
+                    for item in item_range_list:
+                        st.markdown(
+                            f'<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; height: auto; background-color: #f0f0f0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">{item}</div>',
+                            unsafe_allow_html=True)
+                else:
+                    st.warning(f"{inform_cbf}")
+                    st.write(f"{item_searching}")
+                    st.write(f"{item_range_list}")
+        else:
+            st.markdown(
+                f"""
+                #### Recommendation with Product Name text input
+                """
+            )
+            product_search = st.text_input("Enter Product name: ")
+            inform_cbf_2, item_range_list = get_top_recommend_from_text(product_search)
+            # Button
+            if st.button("Submit name"):
+
+                st.success(f"{inform_cbf_2}")
+                st.write(f"**Here are similar products:** ")
+                for item in item_range_list:
+                    st.markdown(
+                        f'<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; height: auto; background-color: #f0f0f0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">{item}</div>',
+                        unsafe_allow_html=True)
+
+
