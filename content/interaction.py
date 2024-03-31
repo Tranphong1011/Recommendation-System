@@ -220,8 +220,8 @@ def interaction(x):
                             unsafe_allow_html=True)
                 else:
                     st.warning(f"{inform_cbf}")
-                    st.write(f"{item_searching}")
-                    st.write(f"{item_range_list}")
+                    st.write(f"**{item_searching}**")
+                    st.write(f"**{item_range_list}**")
         else:
             st.markdown(
                 f"""
