@@ -127,7 +127,8 @@ index = similarities.SparseMatrixSimilarity(tfidf[corpus],
 #         return [item_searching, item_range_list, inform]
 #
 
-product_name_LDA = os.path.join(parent_dir, 'processed_data', 'product_name_LDA.csv')
+product_name_LDA_path = os.path.join(parent_dir, 'processed_data', 'product_name_LDA.csv')
+product_name_LDA = pd.read_csv(product_name_LDA_path)
 def get_top_recommend_from_item(product_id):
     product_list = product_name.product_id.values
     if ~np.isin(product_id, product_list):
