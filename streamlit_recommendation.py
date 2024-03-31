@@ -42,8 +42,8 @@ if topics[selected_category]:
         data((topics['Data Process and Explore'].index(selected_subcategory)))
     elif selected_subcategory in topics['Model Build Process']:
         model((topics['Model Build Process'].index(selected_subcategory)))
-    # elif selected_subcategory in topics['User Interaction']:
-    #     interaction((topics['User Interaction'].index(selected_subcategory)))
+    elif selected_subcategory in topics['User Interaction']:
+        interaction((topics['User Interaction'].index(selected_subcategory)))
     else:
         st.sidebar.write("No subtopics available for this category.")
 if selected_category == "Conclusions":
