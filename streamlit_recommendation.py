@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 from content.intro import intro
 from content.data import data
@@ -6,6 +7,15 @@ from content.conclusion import conclusion
 from content.interaction import interaction
 
 
+
+
+html_code = """
+<div style="position:relative;padding-bottom:56.25%;">
+    <iframe src="https://lottie.host/embed/3387c1bb-5cf6-47e7-8cfc-95fa8790a5cc/QUtF9UQOQF.json" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+</div>
+"""
+
+st.sidebar.markdown(html_code, unsafe_allow_html=True)
 st.title("Recommender Systems")
 st.sidebar.title('Categories')
 # """
@@ -37,17 +47,28 @@ if topics[selected_category]:
     st.sidebar.markdown("<h2 style='margin-bottom:0'>Subcategories:</h2>", unsafe_allow_html=True)
     selected_subcategory = st.sidebar.radio('Select Subcategory', topics[selected_category])
     if selected_subcategory in topics['Introduction']:
+
         intro((topics['Introduction'].index(selected_subcategory)))
     elif selected_subcategory in topics['Data Process and Explore']:
+
         data((topics['Data Process and Explore'].index(selected_subcategory)))
+
     elif selected_subcategory in topics['Model Build Process']:
+
         model((topics['Model Build Process'].index(selected_subcategory)))
     elif selected_subcategory in topics['User Interaction']:
-        interaction((topics['User Interaction'].index(selected_subcategory)))
+        with st.spinner('Please wait...'):
+            interaction((topics['User Interaction'].index(selected_subcategory)))
     else:
+
         st.sidebar.write("No subtopics available for this category.")
 if selected_category == "Conclusions":
     conclusion()
+
+
+
+
+
 
 
 
