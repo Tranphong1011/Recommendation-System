@@ -82,9 +82,9 @@ product_rating = pd.read_csv(product_rating_path)
 product_select = product[["product_id", "products_gem_re"]]
 product_rating_select = product_rating[["product_id", "user_id"]]
 
-combine_data = pd.merge(product_select,product_rating_select,on='product_id')
-def product_name_processing(user_id):
 
+def product_name_processing(user_id):
+    combine_data = pd.merge(product_select, product_rating_select, on='product_id')
     group_data = combine_data.groupby('user_id')['products_gem_re'].apply(list).reset_index()
     product_info_list = group_data.loc[group_data.user_id == user_id, "products_gem_re"].values[0]
     product_info_text = ' '.join([' '.join(sublist) for sublist in product_info_list if isinstance(sublist, list)])
