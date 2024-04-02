@@ -1,84 +1,84 @@
-# import pandas as pd
-# import numpy as np
-# import pickle
-# import os
-# import sys
-# import re
-# import ast
-# import streamlit as st
-# import warnings
-# warnings.filterwarnings("ignore")
-# from wordcloud import WordCloud
-# import matplotlib.pyplot as plt
-# from gensim import corpora, models, similarities
-# from underthesea import word_tokenize
-# # import streamlit_nested_layout
-# import locale
-#
-# def format_vnd(amount):
-#     locale.setlocale(locale.LC_ALL, 'vi_VN.UTF-8')
-#     return locale.currency(amount, grouping=True)
-#
-#
-#
-# # Add the parent directory to the Python path
-# parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-# sys.path.append(parent_dir)
-#
-# # Text processing
-# csv_path = os.path.join(parent_dir, 'materials', 'vietnamese-stopwords.txt')
-# with open(csv_path, 'r', encoding='utf-8') as file:
-#     stop_words = file.read()
-# stop_words = stop_words.split('\n')
-# remove_words = ['s','l','xl','xxl','kg', 'k','c']
-#
-# # Product raw info
-# product_raw_path = os.path.join(parent_dir, 'materials', 'Products_ThoiTrangNam_raw.csv')
-# product_raw = pd.read_csv(product_raw_path)
-# def product_info(product_id):
-#     sub_category = product_raw.loc[product_raw.product_id==product_id, "sub_category"].values[0]
-#     link_info = product_raw.loc[product_raw.product_id==product_id, "link"].values[0]
-#     image_product = product_raw.loc[product_raw.product_id==product_id, "image"].values[0]
-#     price = product_raw.loc[product_raw.product_id==product_id,"price"].values[0]
-#     rating = product_raw.loc[product_raw.product_id==product_id,"rating"].values[0]
-#     description = product_raw.loc[product_raw.product_id==product_id,"description"].values[0]
-#     if pd.isnull(image_product):
-#         image_product = "No image available"
-#     if pd.isnull(description):
-#         description = "No description Found"
-#     return [sub_category, link_info, image_product, price, rating, description]
-#
-#
-# def rating_bar(rating):
-#     if rating > 0:
-#         rating_bar = f'''
-#         <div style="display: flex; align-items: center;">
-#             <div style="width: {rating * 20}%; background-color: #ffd700; height: 20px; border-radius: 5px; position: relative;">
-#                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: black;">{rating}</div>
-#             </div>
-#             <div style="width: {(5 - rating) * 20}%; background-color: #d3d3d3; height: 20px; border-radius: 5px;"></div>
-#         </div>
-#         '''
-#         return rating_bar
-#     else:
-#         return "Rating not found"
-#
-#
-# def text_processing(text):
-#     cleaned_text = re.sub(r'\(.*?\)|\[.*?\]', '', text)
-#     cleaned_text = re.sub(r'\b\w*\d\w*\b', '', cleaned_text)
-#     cleaned_text = word_tokenize(cleaned_text, format="text")
-#     cleaned_text = [word for word in cleaned_text.split()]
-#     cleaned_text = [re.sub('[0-9]+','', word) for word in cleaned_text]
-#     cleaned_text = [word.lower() for word in cleaned_text if not word in ['', ' ', ',', '.', '...', '-',':', ';', '?', '%', '_%' , '(', ')', '+', '/', 'g', 'ml']]
-#     cleaned_text = [word for word in cleaned_text if not word in stop_words]
-#     cleaned_text = [word for word in cleaned_text if not word in remove_words]
-#     cleaned_text = [word for word in cleaned_text if re.match(r'^[\wàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ_]+$', word)]
-#     cleaned_text = [re.sub(r'\b_+|_+\b', '', word) for word in cleaned_text ]
-#     return cleaned_text
-#
-#
-#
+import pandas as pd
+import numpy as np
+import pickle
+import os
+import sys
+import re
+import ast
+import streamlit as st
+import warnings
+warnings.filterwarnings("ignore")
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from gensim import corpora, models, similarities
+from underthesea import word_tokenize
+# import streamlit_nested_layout
+import locale
+
+def format_vnd(amount):
+    locale.setlocale(locale.LC_ALL, 'vi_VN.UTF-8')
+    return locale.currency(amount, grouping=True)
+
+
+
+# Add the parent directory to the Python path
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(parent_dir)
+
+# Text processing
+csv_path = os.path.join(parent_dir, 'materials', 'vietnamese-stopwords.txt')
+with open(csv_path, 'r', encoding='utf-8') as file:
+    stop_words = file.read()
+stop_words = stop_words.split('\n')
+remove_words = ['s','l','xl','xxl','kg', 'k','c']
+
+# Product raw info
+product_raw_path = os.path.join(parent_dir, 'materials', 'Products_ThoiTrangNam_raw.csv')
+product_raw = pd.read_csv(product_raw_path)
+def product_info(product_id):
+    sub_category = product_raw.loc[product_raw.product_id==product_id, "sub_category"].values[0]
+    link_info = product_raw.loc[product_raw.product_id==product_id, "link"].values[0]
+    image_product = product_raw.loc[product_raw.product_id==product_id, "image"].values[0]
+    price = product_raw.loc[product_raw.product_id==product_id,"price"].values[0]
+    rating = product_raw.loc[product_raw.product_id==product_id,"rating"].values[0]
+    description = product_raw.loc[product_raw.product_id==product_id,"description"].values[0]
+    if pd.isnull(image_product):
+        image_product = "No image available"
+    if pd.isnull(description):
+        description = "No description Found"
+    return [sub_category, link_info, image_product, price, rating, description]
+
+
+def rating_bar(rating):
+    if rating > 0:
+        rating_bar = f'''
+        <div style="display: flex; align-items: center;">
+            <div style="width: {rating * 20}%; background-color: #ffd700; height: 20px; border-radius: 5px; position: relative;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: black;">{rating}</div>
+            </div>
+            <div style="width: {(5 - rating) * 20}%; background-color: #d3d3d3; height: 20px; border-radius: 5px;"></div>
+        </div>
+        '''
+        return rating_bar
+    else:
+        return "Rating not found"
+
+
+def text_processing(text):
+    cleaned_text = re.sub(r'\(.*?\)|\[.*?\]', '', text)
+    cleaned_text = re.sub(r'\b\w*\d\w*\b', '', cleaned_text)
+    cleaned_text = word_tokenize(cleaned_text, format="text")
+    cleaned_text = [word for word in cleaned_text.split()]
+    cleaned_text = [re.sub('[0-9]+','', word) for word in cleaned_text]
+    cleaned_text = [word.lower() for word in cleaned_text if not word in ['', ' ', ',', '.', '...', '-',':', ';', '?', '%', '_%' , '(', ')', '+', '/', 'g', 'ml']]
+    cleaned_text = [word for word in cleaned_text if not word in stop_words]
+    cleaned_text = [word for word in cleaned_text if not word in remove_words]
+    cleaned_text = [word for word in cleaned_text if re.match(r'^[\wàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ_]+$', word)]
+    cleaned_text = [re.sub(r'\b_+|_+\b', '', word) for word in cleaned_text ]
+    return cleaned_text
+
+
+
 # # Product name processing
 # product_rating_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam_rating.csv')
 # product_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam.csv')
