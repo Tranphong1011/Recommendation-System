@@ -64,7 +64,9 @@ def data(x):
         if selected_page == "Products Data":
             st.dataframe(products_data.head(5))
 
-
+            buffer = io.StringIO()
+            products_data.info(buf=buffer)
+            st.text(buffer.getvalue())
 
             st.markdown(
                 """
@@ -76,7 +78,9 @@ def data(x):
 
             st.dataframe(products_data_selected.head(5))
 
-
+            buffer = io.StringIO()
+            products_data_selected.info(buf=buffer)
+            st.text(buffer.getvalue())
 
 
             st.markdown(""" 

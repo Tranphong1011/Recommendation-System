@@ -5,17 +5,17 @@ from content.data import data
 from content.model import model
 from content.conclusion import conclusion
 from content.interaction import interaction
+import streamlit.components.v1 as components
 
 
+# html_code = """
+# <div style="position:relative;padding-bottom:56.25%;">
+#     <iframe src="https://lottie.host/embed/3387c1bb-5cf6-47e7-8cfc-95fa8790a5cc/QUtF9UQOQF.json" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+# </div>
+# """
+# st.sidebar.markdown(html_code, unsafe_allow_html=True)
 
 
-html_code = """
-<div style="position:relative;padding-bottom:56.25%;">
-    <iframe src="https://lottie.host/embed/3387c1bb-5cf6-47e7-8cfc-95fa8790a5cc/QUtF9UQOQF.json" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-</div>
-"""
-
-st.sidebar.markdown(html_code, unsafe_allow_html=True)
 st.title("Recommender Systems")
 st.sidebar.title('Categories')
 # """
