@@ -12,7 +12,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from gensim import corpora, models, similarities
 from underthesea import word_tokenize
-import streamlit_nested_layout
+
 
 
 
@@ -90,7 +90,6 @@ def product_name_processing(user_id):
     product_info_text = ' '.join([' '.join(sublist) for sublist in product_info_list if isinstance(sublist, list)])
     return product_info_text
 
-product_name_processing(199)
 #Plot wordcloud
 def wordcloud(user_id):
     product_info  = product_name_processing(user_id)
