@@ -176,31 +176,31 @@ def get_top_recommend_from_text(text):
     return [inform,product_id_list]
 
 
-# def display_list(product_id_list):
-#     for item_id in product_id_list:
-#         item_name = product_raw.loc[product_raw['product_id'] == item_id, "product_name"].values[0]
-#         sub_category, link_info, link_image, price, rating, description = product_info(item_id)
-#
-#         with st.expander(
-#                 f"**{item_name}**"
-#         ):
-#             outer_cols = st.columns([1, 1])
-#             with outer_cols[0]:
-#                 if link_image == "No image available":
-#                     st.image(f'./pictures/no_image_found.jpg')
-#                 else:
-#                     st.image(f'{link_image}')
-#                 st.markdown(f"**Subcategory**: {sub_category}")
-#                 st.markdown(f"**Product info**: {link_info}")
-#                 st.markdown(f"**Price**: {format_vnd(price)}")
-#                 inner_cols = st.columns([1,5])
-#                 with inner_cols[0]:
-#                     st.markdown(f'**Rating**')
-#                 with inner_cols[1]:
-#                     st.markdown(rating_bar(rating), unsafe_allow_html=True)
-#             with outer_cols[1]:
-#                 with st.expander('**Show description**'):
-#                     st.markdown(f"{description}", unsafe_allow_html=True)
+def display_list(product_id_list):
+    for item_id in product_id_list:
+        item_name = product_raw.loc[product_raw['product_id'] == item_id, "product_name"].values[0]
+        sub_category, link_info, link_image, price, rating, description = product_info(item_id)
+
+        with st.expander(
+                f"**{item_name}**"
+        ):
+            outer_cols = st.columns([1, 1])
+            with outer_cols[0]:
+                if link_image == "No image available":
+                    st.image(f'./pictures/no_image_found.jpg')
+                else:
+                    st.image(f'{link_image}')
+                st.markdown(f"**Subcategory**: {sub_category}")
+                st.markdown(f"**Product info**: {link_info}")
+                st.markdown(f"**Price**: {format_vnd(price)}")
+                inner_cols = st.columns([1,5])
+                with inner_cols[0]:
+                    st.markdown(f'**Rating**')
+                with inner_cols[1]:
+                    st.markdown(rating_bar(rating), unsafe_allow_html=True)
+            with outer_cols[1]:
+                with st.expander('**Show description**'):
+                    st.markdown(f"{description}", unsafe_allow_html=True)
 def interaction(x):
     print(f"This function does something but doesn't return anything")
     # # Collaborative filtering
