@@ -12,7 +12,12 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from gensim import corpora, models, similarities
 from underthesea import word_tokenize
+# import streamlit_nested_layout
+import locale
 
+def format_vnd(amount):
+    locale.setlocale(locale.LC_ALL, 'vi_VN.UTF-8')
+    return locale.currency(amount, grouping=True)
 
 
 
@@ -187,7 +192,7 @@ def display_list(product_id_list):
                     st.image(f'{link_image}')
                 st.markdown(f"**Subcategory**: {sub_category}")
                 st.markdown(f"**Product info**: {link_info}")
-                st.markdown(f"**Price**: {int(price)} VND")
+                st.markdown(f"**Price**: {format_vnd(price)}")
                 inner_cols = st.columns([1,5])
                 with inner_cols[0]:
                     st.markdown(f'**Rating**')
@@ -198,73 +203,73 @@ def display_list(product_id_list):
                     st.markdown(f"{description}", unsafe_allow_html=True)
 def interaction(x):
     print(f"This function does something but doesn't return anything")
-    # Collaborative filtering
-    if x == 0:
-        st.markdown(
-            f"""
-            #### Recommendation with User ID
-            """
-        )
-        user_id = st.number_input("Enter User ID: ", 0, value=None, placeholder="Example: 10, 102220, ...")
-
-        options_dic = {"Yes" : 1, "No": 0}
-        # Select box
-        rating_select = st.selectbox("Do you want recommendation with rating? ", list(options_dic.keys()))
-        # Button
-        user, product_id_list, inform_cf = get_recommend(user_id, options_dic[rating_select])
-        if st.button("Submit"):
-            if inform_cf == "Successfully!":
-                st.success(f"{inform_cf}")
-                st.write(f"**{user}**")
-                st.write(f"**Here are similar products**: ")
-                display_list(product_id_list)
-                wordcloud(user_id)
-            else:
-                st.warning(f"{inform_cf}")
-                st.write(f"{user}")
-                st.write(f"{product_id_list}")
-
-    # Content_based filtering
-    else:
-        options = ["Recommendation with Product ID", "Recommendation with Product Name text input"]
-        selected_option = st.selectbox("Select an option",options )
-        if selected_option == options[0]:
-
-            st.markdown(
-                f"""
-                #### Recommendation with Product ID
-                """
-            )
-            product_id = st.number_input("Enter Product ID: ", value=None, placeholder="Example: 175063, 194, ...")
-
-            item_searching,  product_id_list, inform_cbf = get_top_recommend_from_item(product_id)
-            # Button
-            if st.button("Submit ID"):
-
-                if inform_cbf == "Successfully!":
-                    st.success(f"{inform_cbf}")
-                    st.write(f"**The product with ID {product_id}** is: {item_searching}")
-                    st.write(f"**Here are similar products:** ")
-                    display_list(product_id_list)
-
-                else:
-                    st.warning(f"{inform_cbf}")
-                    st.write(f"**{item_searching}**")
-                    st.write(f"**{product_id_list}**")
-        else:
-            st.markdown(
-                f"""
-                #### Recommendation with Product Name text input
-                """
-            )
-            product_search = st.text_input("Enter Product name: ", value="", placeholder="Áo thun ba lỗ nam, ....")
-            inform_cbf_2, product_id_list = get_top_recommend_from_text(product_search)
-            # Button
-            if st.button("Submit name"):
-
-                st.success(f"{inform_cbf_2}")
-                st.write(f"**Here are similar products:** ")
-                display_list(product_id_list)
+    # # Collaborative filtering
+    # if x == 0:
+    #     st.markdown(
+    #         f"""
+    #         #### Recommendation with User ID
+    #         """
+    #     )
+    #     user_id = st.number_input("Enter User ID: ", 0, value=None, placeholder="Example: 10, 102220, ...")
+    #
+    #     options_dic = {"Yes" : 1, "No": 0}
+    #     # Select box
+    #     rating_select = st.selectbox("Do you want recommendation with rating? ", list(options_dic.keys()))
+    #     # Button
+    #     user, product_id_list, inform_cf = get_recommend(user_id, options_dic[rating_select])
+    #     if st.button("Submit"):
+    #         if inform_cf == "Successfully!":
+    #             st.success(f"{inform_cf}")
+    #             st.write(f"**{user}**")
+    #             st.write(f"**Here are similar products**: ")
+    #             display_list(product_id_list)
+    #             wordcloud(user_id)
+    #         else:
+    #             st.warning(f"{inform_cf}")
+    #             st.write(f"{user}")
+    #             st.write(f"{product_id_list}")
+    #
+    # # Content_based filtering
+    # else:
+    #     options = ["Recommendation with Product ID", "Recommendation with Product Name text input"]
+    #     selected_option = st.selectbox("Select an option",options )
+    #     if selected_option == options[0]:
+    #
+    #         st.markdown(
+    #             f"""
+    #             #### Recommendation with Product ID
+    #             """
+    #         )
+    #         product_id = st.number_input("Enter Product ID: ",0, value=None, placeholder="Example: 175063, 194, ...")
+    #
+    #         item_searching,  product_id_list, inform_cbf = get_top_recommend_from_item(product_id)
+    #         # Button
+    #         if st.button("Submit ID"):
+    #
+    #             if inform_cbf == "Successfully!":
+    #                 st.success(f"{inform_cbf}")
+    #                 st.write(f"**The product with ID {product_id}** is: {item_searching}")
+    #                 st.write(f"**Here are similar products:** ")
+    #                 display_list(product_id_list)
+    #
+    #             else:
+    #                 st.warning(f"{inform_cbf}")
+    #                 st.write(f"**{item_searching}**")
+    #                 st.write(f"**{product_id_list}**")
+    #     else:
+    #         st.markdown(
+    #             f"""
+    #             #### Recommendation with Product Name text input
+    #             """
+    #         )
+    #         product_search = st.text_input("Enter Product name: ", value="", placeholder="Áo thun ba lỗ nam, ....")
+    #         inform_cbf_2, product_id_list = get_top_recommend_from_text(product_search)
+    #         # Button
+    #         if st.button("Submit name"):
+    #
+    #             st.success(f"{inform_cbf_2}")
+    #             st.write(f"**Here are similar products:** ")
+    #             display_list(product_id_list)
 
 
 
