@@ -82,25 +82,26 @@ product_rating = pd.read_csv(product_rating_path)
 product_select = product[["product_id", "products_gem_re"]]
 product_rating_select = product_rating[["product_id", "user_id"]]
 
+# combine_data = pd.merge(product_select, product_rating_select, on='product_id')
 
-def product_name_processing(user_id):
-    combine_data = pd.merge(product_select, product_rating_select, on='product_id')
-    group_data = combine_data.groupby('user_id')['products_gem_re'].apply(list).reset_index()
-    product_info_list = group_data.loc[group_data.user_id == user_id, "products_gem_re"].values[0]
-    product_info_text = ' '.join([' '.join(sublist) for sublist in product_info_list if isinstance(sublist, list)])
-    return product_info_text
+# def product_name_processing(user_id):
+#
+#     group_data = combine_data.groupby('user_id')['products_gem_re'].apply(list).reset_index()
+#     product_info_list = group_data.loc[group_data.user_id == user_id, "products_gem_re"].values[0]
+#     product_info_text = ' '.join([' '.join(sublist) for sublist in product_info_list if isinstance(sublist, list)])
+#     return product_info_text
 
 #Plot wordcloud
-def wordcloud(user_id):
-    product_info  = product_name_processing(user_id)
-    nWords = 100
-    # Generate the word cloud with improved clarity
-    wordcloud = WordCloud(width=800, height=400, background_color='white',max_words=nWords).generate(product_info)
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.imshow(wordcloud, interpolation='bilinear')
-    ax.axis('off')  # Remove axis
-    ax.set_title(f'Word Cloud of product of user {user_id}', fontsize=20)
-    st.pyplot(fig)
+# def wordcloud(user_id):
+#     product_info  = product_name_processing(user_id)
+#     nWords = 100
+#     # Generate the word cloud with improved clarity
+#     wordcloud = WordCloud(width=800, height=400, background_color='white',max_words=nWords).generate(product_info)
+#     fig, ax = plt.subplots(figsize=(10, 5))
+#     ax.imshow(wordcloud, interpolation='bilinear')
+#     ax.axis('off')  # Remove axis
+#     ax.set_title(f'Word Cloud of product of user {user_id}', fontsize=20)
+#     st.pyplot(fig)
 
 
 # Collaborative Filtering
@@ -218,7 +219,7 @@ def interaction(x):
                 st.write(f"**{user}**")
                 st.write(f"**Here are similar products**: ")
                 display_list(product_id_list)
-                wordcloud(user_id)
+                # wordcloud(user_id)
             else:
                 st.warning(f"{inform_cf}")
                 st.write(f"{user}")
