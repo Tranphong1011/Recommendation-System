@@ -29,19 +29,19 @@ remove_words = ['s','l','xl','xxl','kg', 'k','c']
 
 # Product raw info
 product_raw_path = os.path.join(parent_dir, 'materials', 'Products_ThoiTrangNam_raw.csv')
-product_raw = pd.read_csv(product_raw_path)
-def product_info(product_id):
-    sub_category = product_raw.loc[product_raw.product_id==product_id, "sub_category"].values[0]
-    link_info = product_raw.loc[product_raw.product_id==product_id, "link"].values[0]
-    image_product = product_raw.loc[product_raw.product_id==product_id, "image"].values[0]
-    price = product_raw.loc[product_raw.product_id==product_id,"price"].values[0]
-    rating = product_raw.loc[product_raw.product_id==product_id,"rating"].values[0]
-    description = product_raw.loc[product_raw.product_id==product_id,"description"].values[0]
-    if pd.isnull(image_product):
-        image_product = "No image available"
-    if pd.isnull(description):
-        description = "No description Found"
-    return [sub_category, link_info, image_product, price, rating, description]
+# product_raw = pd.read_csv(product_raw_path)
+# def product_info(product_id):
+#     sub_category = product_raw.loc[product_raw.product_id==product_id, "sub_category"].values[0]
+#     link_info = product_raw.loc[product_raw.product_id==product_id, "link"].values[0]
+#     image_product = product_raw.loc[product_raw.product_id==product_id, "image"].values[0]
+#     price = product_raw.loc[product_raw.product_id==product_id,"price"].values[0]
+#     rating = product_raw.loc[product_raw.product_id==product_id,"rating"].values[0]
+#     description = product_raw.loc[product_raw.product_id==product_id,"description"].values[0]
+#     if pd.isnull(image_product):
+#         image_product = "No image available"
+#     if pd.isnull(description):
+#         description = "No description Found"
+#     return [sub_category, link_info, image_product, price, rating, description]
 
 
 def rating_bar(rating):
@@ -144,21 +144,21 @@ index = similarities.SparseMatrixSimilarity(tfidf[corpus],
 data_result = pd.DataFrame(index[tfidf[corpus]])
 product_name["products_gem_re"] = product_name["products_gem_re"].apply(lambda x: ' '.join(x))
 
-def get_top_recommend_from_item(product_id):
-    product_list = product_raw.product_id.values
-    if ~np.isin(product_id, product_list):
-        inform = "Unsuccessfully!"
-        return ["No items found!", "Can not recommend!", inform]
-    else:
-        inform = "Successfully!"
-        query = product_raw[product_raw['product_id'] == product_id]
-        item_searching = query.product_name.values[0]
-        processed_text = text_processing(item_searching)
-        kw_vector = dictionary.doc2bow(processed_text)
-        sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
-        get_item_range = product_name.iloc[sim_indices_desc[:5]].product_id.values
-        product_id_list = get_item_range.tolist()
-        return [item_searching, product_id_list, inform]
+# def get_top_recommend_from_item(product_id):
+#     product_list = product_raw.product_id.values
+#     if ~np.isin(product_id, product_list):
+#         inform = "Unsuccessfully!"
+#         return ["No items found!", "Can not recommend!", inform]
+#     else:
+#         inform = "Successfully!"
+#         query = product_raw[product_raw['product_id'] == product_id]
+#         item_searching = query.product_name.values[0]
+#         processed_text = text_processing(item_searching)
+#         kw_vector = dictionary.doc2bow(processed_text)
+#         sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
+#         get_item_range = product_name.iloc[sim_indices_desc[:5]].product_id.values
+#         product_id_list = get_item_range.tolist()
+#         return [item_searching, product_id_list, inform]
 
 
 def get_top_recommend_from_text(text):
@@ -171,32 +171,32 @@ def get_top_recommend_from_text(text):
     return [inform,product_id_list]
 
 
-def display_list(product_id_list):
-    for item_id in product_id_list:
-        item_name = product_raw.loc[product_raw['product_id'] == item_id, "product_name"].values[0]
-        sub_category, link_info, link_image, price, rating, description = product_info(item_id)
-
-        with st.expander(
-                f"**{item_name}**"
-        ):
-            outer_cols = st.columns([1, 1])
-            with outer_cols[0]:
-                if link_image == "No image available":
-                    st.image(f'./pictures/no_image_found.jpg')
-                else:
-                    st.image(f'{link_image}')
-                # st.markdown(f"**Image**: {link_image}")
-                st.markdown(f"**Subcategory**: {sub_category}")
-                st.markdown(f"**Product info**: {link_info}")
-                st.markdown(f"**Price**: {int(price)} VND")
-                inner_cols = st.columns([1,5])
-                with inner_cols[0]:
-                    st.markdown(f'**Rating**')
-                with inner_cols[1]:
-                    st.markdown(rating_bar(rating), unsafe_allow_html=True)
-            with outer_cols[1]:
-                with st.expander('**Show description**'):
-                    st.markdown(f"{description}", unsafe_allow_html=True)
+# def display_list(product_id_list):
+#     for item_id in product_id_list:
+#         item_name = product_raw.loc[product_raw['product_id'] == item_id, "product_name"].values[0]
+#         sub_category, link_info, link_image, price, rating, description = product_info(item_id)
+#
+#         with st.expander(
+#                 f"**{item_name}**"
+#         ):
+#             outer_cols = st.columns([1, 1])
+#             with outer_cols[0]:
+#                 if link_image == "No image available":
+#                     st.image(f'./pictures/no_image_found.jpg')
+#                 else:
+#                     st.image(f'{link_image}')
+#                 # st.markdown(f"**Image**: {link_image}")
+#                 st.markdown(f"**Subcategory**: {sub_category}")
+#                 st.markdown(f"**Product info**: {link_info}")
+#                 st.markdown(f"**Price**: {int(price)} VND")
+#                 inner_cols = st.columns([1,5])
+#                 with inner_cols[0]:
+#                     st.markdown(f'**Rating**')
+#                 with inner_cols[1]:
+#                     st.markdown(rating_bar(rating), unsafe_allow_html=True)
+#             with outer_cols[1]:
+#                 with st.expander('**Show description**'):
+#                     st.markdown(f"{description}", unsafe_allow_html=True)
 def interaction(x):
     print(f"This function does something but doesn't return anything")
     # Collaborative filtering
@@ -218,7 +218,7 @@ def interaction(x):
                 st.success(f"{inform_cf}")
                 st.write(f"**{user}**")
                 st.write(f"**Here are similar products**: ")
-                display_list(product_id_list)
+                # display_list(product_id_list)
                 # wordcloud(user_id)
             else:
                 st.warning(f"{inform_cf}")
@@ -238,20 +238,20 @@ def interaction(x):
             )
             product_id = st.number_input("Enter Product ID: ", value=None, placeholder="Example: 175063, 194, ...")
             # item_searching, item_range_list, product_id_list, inform_cbf = get_top_recommend_from_item(product_id)
-            item_searching,  product_id_list, inform_cbf = get_top_recommend_from_item(product_id)
-            # Button
-            if st.button("Submit ID"):
-
-                if inform_cbf == "Successfully!":
-                    st.success(f"{inform_cbf}")
-                    st.write(f"**The product with ID {product_id}** is: {item_searching}")
-                    st.write(f"**Here are similar products:** ")
-                    display_list(product_id_list)
-
-                else:
-                    st.warning(f"{inform_cbf}")
-                    st.write(f"**{item_searching}**")
-                    st.write(f"**{product_id_list}**")
+            # item_searching,  product_id_list, inform_cbf = get_top_recommend_from_item(product_id)
+            # # Button
+            # if st.button("Submit ID"):
+            #
+            #     if inform_cbf == "Successfully!":
+            #         st.success(f"{inform_cbf}")
+            #         st.write(f"**The product with ID {product_id}** is: {item_searching}")
+            #         st.write(f"**Here are similar products:** ")
+            #         # display_list(product_id_list)
+            #
+            #     else:
+            #         st.warning(f"{inform_cbf}")
+            #         st.write(f"**{item_searching}**")
+            #         st.write(f"**{product_id_list}**")
         else:
             st.markdown(
                 f"""
@@ -265,7 +265,7 @@ def interaction(x):
 
                 st.success(f"{inform_cbf_2}")
                 st.write(f"**Here are similar products:** ")
-                display_list(product_id_list)
+                # display_list(product_id_list)
 
 
 
