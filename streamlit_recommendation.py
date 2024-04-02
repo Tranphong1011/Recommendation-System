@@ -1,4 +1,3 @@
-import time
 import streamlit as st
 from content.intro import intro
 from content.data import data

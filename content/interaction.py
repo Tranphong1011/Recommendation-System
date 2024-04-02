@@ -12,7 +12,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from gensim import corpora, models, similarities
 from underthesea import word_tokenize
-# import streamlit_nested_layout
+import streamlit_nested_layout
 
 
 def format_vnd(amount):
@@ -199,7 +199,7 @@ def display_list(product_id_list):
                     st.image(f'{link_image}')
                 st.markdown(f"**Subcategory**: {sub_category}")
                 st.markdown(f"**Product info**: {link_info}")
-                st.markdown(f"**Price**: {format_vnd(price)}")
+                st.markdown(f"**Price**: {format_vnd(int(price))}")
                 inner_cols = st.columns([1,5])
                 with inner_cols[0]:
                     st.markdown(f'**Rating**')
@@ -209,7 +209,6 @@ def display_list(product_id_list):
                 with st.expander('**Show description**'):
                     st.markdown(f"{description}", unsafe_allow_html=True)
 def interaction(x):
-    print(f"This function does something but doesn't return anything")
     # Collaborative filtering
     if x == 0:
         st.markdown(
