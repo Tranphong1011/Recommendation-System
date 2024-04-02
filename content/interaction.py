@@ -146,7 +146,7 @@ tfidf = models.TfidfModel(corpus) # Use TF-IDF Model to process corpus
 
 index = similarities.SparseMatrixSimilarity(tfidf[corpus],
                                             num_features = feature_cnt)
-data_result = pd.DataFrame(index[tfidf[corpus]])
+
 product_name["products_gem_re"] = product_name["products_gem_re"].apply(lambda x: ' '.join(x))
 
 def get_top_recommend_from_item(product_id):
