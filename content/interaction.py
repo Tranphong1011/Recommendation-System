@@ -109,73 +109,73 @@ def wordcloud(user_id):
     st.pyplot(fig)
 
 
-# # Collaborative Filtering
-# pkl_file_path = os.path.join(parent_dir, 'models', 'algorithm_BSOnly.pkl')
-# data_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam_rating.csv')
-# with open(pkl_file_path, 'rb') as file:
-#     algorithm_svd = pickle.load(file)
-#
-# data = pd.read_csv(data_path)
-# def get_recommend(user_id, rating_prefer):
-#     user_list = data.user_id.drop_duplicates().values
-#     if ~np.isin(user_id, user_list):
-#         inform = "Unsuccessfully!"
-#         return ["No users found!", "Can not recommend!", inform]
-#     else:
-#         inform = "Successfully!"
-#         df_score = data[["product_id"]]
-#         df_score['EstimateScore'] = df_score['product_id'].apply(lambda x: algorithm_svd["algo"].predict(user_id, x).est) # est: get EstimateScore
-#         df_score = df_score.sort_values(by=['EstimateScore'], ascending=False)
-#         df_score_top10 = df_score.drop_duplicates().head(10)
-#         df_score_top5 = df_score.drop_duplicates().head()
-#         if rating_prefer == 0:
-#             product_id_list = data.loc[df_score_top5.index].head().product_id.tolist()
-#         else:
-#             product_id_list = data.loc[df_score_top10.index].sort_values(by=['rating'], ascending=False).head().product_id.tolist()
-#         return ["User found!", product_id_list, inform]
-#
-#
-# # Content_based Filtering
-# csv_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam.csv')
-# product_name = pd.read_csv(csv_path,index_col=0, converters={'products_gem_re': ast.literal_eval})
-# products_gem_re = product_name.products_gem_re
-# dictionary = corpora.Dictionary(products_gem_re)
-# feature_cnt = len(dictionary.token2id)
-# corpus = [dictionary.doc2bow(text) for text in products_gem_re]
-# tfidf = models.TfidfModel(corpus) # Use TF-IDF Model to process corpus
-#
-# index = similarities.SparseMatrixSimilarity(tfidf[corpus],
-#                                             num_features = feature_cnt)
-# data_result = pd.DataFrame(index[tfidf[corpus]])
-# product_name["products_gem_re"] = product_name["products_gem_re"].apply(lambda x: ' '.join(x))
-#
-# def get_top_recommend_from_item(product_id):
-#     product_list = product_raw.product_id.values
-#     if ~np.isin(product_id, product_list):
-#         inform = "Unsuccessfully!"
-#         return ["No items found!", "Can not recommend!", inform]
-#     else:
-#         inform = "Successfully!"
-#         query = product_raw[product_raw['product_id'] == product_id]
-#         item_searching = query.product_name.values[0]
-#         processed_text = text_processing(item_searching)
-#         kw_vector = dictionary.doc2bow(processed_text)
-#         sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
-#         get_item_range = product_name.iloc[sim_indices_desc[:5]].product_id.values
-#         product_id_list = get_item_range.tolist()
-#         return [item_searching, product_id_list, inform]
-#
-#
-# def get_top_recommend_from_text(text):
-#     processed_text = text_processing(text)
-#     kw_vector = dictionary.doc2bow(processed_text)
-#     sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
-#     get_item_range = product_name.iloc[sim_indices_desc[:5]].product_id.values
-#     product_id_list = get_item_range.tolist()
-#     inform = "Successfully"
-#     return [inform,product_id_list]
-#
-#
+# Collaborative Filtering
+pkl_file_path = os.path.join(parent_dir, 'models', 'algorithm_BSOnly.pkl')
+data_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam_rating.csv')
+with open(pkl_file_path, 'rb') as file:
+    algorithm_svd = pickle.load(file)
+
+data = pd.read_csv(data_path)
+def get_recommend(user_id, rating_prefer):
+    user_list = data.user_id.drop_duplicates().values
+    if ~np.isin(user_id, user_list):
+        inform = "Unsuccessfully!"
+        return ["No users found!", "Can not recommend!", inform]
+    else:
+        inform = "Successfully!"
+        df_score = data[["product_id"]]
+        df_score['EstimateScore'] = df_score['product_id'].apply(lambda x: algorithm_svd["algo"].predict(user_id, x).est) # est: get EstimateScore
+        df_score = df_score.sort_values(by=['EstimateScore'], ascending=False)
+        df_score_top10 = df_score.drop_duplicates().head(10)
+        df_score_top5 = df_score.drop_duplicates().head()
+        if rating_prefer == 0:
+            product_id_list = data.loc[df_score_top5.index].head().product_id.tolist()
+        else:
+            product_id_list = data.loc[df_score_top10.index].sort_values(by=['rating'], ascending=False).head().product_id.tolist()
+        return ["User found!", product_id_list, inform]
+
+
+# Content_based Filtering
+csv_path = os.path.join(parent_dir, 'processed_data', 'Products_ThoiTrangNam.csv')
+product_name = pd.read_csv(csv_path,index_col=0, converters={'products_gem_re': ast.literal_eval})
+products_gem_re = product_name.products_gem_re
+dictionary = corpora.Dictionary(products_gem_re)
+feature_cnt = len(dictionary.token2id)
+corpus = [dictionary.doc2bow(text) for text in products_gem_re]
+tfidf = models.TfidfModel(corpus) # Use TF-IDF Model to process corpus
+
+index = similarities.SparseMatrixSimilarity(tfidf[corpus],
+                                            num_features = feature_cnt)
+data_result = pd.DataFrame(index[tfidf[corpus]])
+product_name["products_gem_re"] = product_name["products_gem_re"].apply(lambda x: ' '.join(x))
+
+def get_top_recommend_from_item(product_id):
+    product_list = product_raw.product_id.values
+    if ~np.isin(product_id, product_list):
+        inform = "Unsuccessfully!"
+        return ["No items found!", "Can not recommend!", inform]
+    else:
+        inform = "Successfully!"
+        query = product_raw[product_raw['product_id'] == product_id]
+        item_searching = query.product_name.values[0]
+        processed_text = text_processing(item_searching)
+        kw_vector = dictionary.doc2bow(processed_text)
+        sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
+        get_item_range = product_name.iloc[sim_indices_desc[:5]].product_id.values
+        product_id_list = get_item_range.tolist()
+        return [item_searching, product_id_list, inform]
+
+
+def get_top_recommend_from_text(text):
+    processed_text = text_processing(text)
+    kw_vector = dictionary.doc2bow(processed_text)
+    sim_indices_desc = np.argsort(index[tfidf[kw_vector]])[::-1]
+    get_item_range = product_name.iloc[sim_indices_desc[:5]].product_id.values
+    product_id_list = get_item_range.tolist()
+    inform = "Successfully"
+    return [inform,product_id_list]
+
+
 # def display_list(product_id_list):
 #     for item_id in product_id_list:
 #         item_name = product_raw.loc[product_raw['product_id'] == item_id, "product_name"].values[0]
