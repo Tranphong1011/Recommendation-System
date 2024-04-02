@@ -13,11 +13,18 @@ import matplotlib.pyplot as plt
 from gensim import corpora, models, similarities
 from underthesea import word_tokenize
 # import streamlit_nested_layout
-import locale
+
 
 def format_vnd(amount):
-    locale.setlocale(locale.LC_ALL, 'vi_VN.UTF-8')
-    return locale.currency(amount, grouping=True)
+    amount_str = str(amount)
+    result = ""
+    count = 0
+    for i in range(len(amount_str) - 1, -1, -1):
+        result = amount_str[i] + result
+        count += 1
+        if count % 3 == 0 and i != 0:
+            result = "." + result
+    return result + " VND"
 
 
 
