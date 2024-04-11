@@ -4,5 +4,5 @@ numpy
 matplotlib
 gensim 
 underthesea
-wordcloud=
+wordcloud
 streamlit_nested_layout
