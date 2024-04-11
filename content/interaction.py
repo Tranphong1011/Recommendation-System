@@ -10,7 +10,9 @@ import warnings
 warnings.filterwarnings("ignore")
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
-from gensim import corpora, models, similarities
+from gensim import corpora
+from gensim import models
+from gensim import similarities
 from underthesea import word_tokenize
 import streamlit_nested_layout
 
